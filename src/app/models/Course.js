@@ -1,14 +1,20 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
 const slug = require("mongoose-slug-updater");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
+// const AutoIncrement = require("mongoose-sequence")(mongoose);
+// const AutoIncrement = require("mongoose-auto-increment");
 
 const Schema = mongoose.Schema;
 // const ObjectId = Schema.ObjectId;
 
+// const connection = mongoose.createConnection(
+//   "mongodb://127.0.0.1:27017/f8_education"
+// );
+
+// AutoIncrement.initialize(connection);
+
 const CourseSchema = new Schema(
   {
-    _id: { type: Number },
     name: { type: String, required: true },
     description: { type: String },
     videoId: { type: String, required: true },
@@ -17,7 +23,7 @@ const CourseSchema = new Schema(
     slug: { type: String, slug: "name", unique: true },
   },
   {
-    _id: false,
+    // _id: false,
     timestamps: true,
   }
 );
@@ -36,7 +42,12 @@ CourseSchema.query.sortable = function (req) {
 // add plugin
 mongoose.plugin(slug);
 
-CourseSchema.plugin(AutoIncrement);
+// CourseSchema.plugin(AutoIncrement.plugin, {
+//   model: "f8_education",
+//   field: "_id",
+//   startAt: 1,
+//   incrementBy: 1,
+// });
 CourseSchema.plugin(mongooseDelete, {
   deletedAt: true,
   overrideMethods: "all",
